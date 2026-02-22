@@ -1,0 +1,9 @@
+name = "lovebite-events"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+EVENTBRITE_ORG_ID = "2407246841743"
+
+# Secrets (set these with wrangler secret put):
+# EVENTBRITE_PRIVATE_TOKEN = "OJW54ORKFZRTJCKZNV42"
