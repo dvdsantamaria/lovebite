@@ -188,6 +188,30 @@
             width: 100%;
         }
 
+        .nav-btn {
+            padding: 12px 30px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            background: var(--cream);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header.is-scrolled .nav-btn {
+            background: var(--charcoal);
+            color: var(--white);
+        }
+
+        .nav-btn:hover {
+            background: var(--gold) !important;
+            color: var(--white) !important;
+        }
+
         /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
@@ -1170,6 +1194,28 @@
             width: 100%;
         }
 
+        .mobile-menu-btn {
+            margin-top: 20px;
+            padding: 18px 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--charcoal);
+            border: none;
+            border-radius: 0;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--gold);
+            color: var(--white);
+        }
+
         @media (max-width: 768px) {
             .mobile-menu-header {
                 padding: 15px 20px;
@@ -1192,6 +1238,13 @@
             .mobile-menu-link {
                 font-size: 24px;
                 letter-spacing: 6px;
+            }
+
+            .mobile-menu-btn {
+                margin-top: 15px;
+                padding: 16px 40px;
+                font-size: 12px;
+                letter-spacing: 2px;
             }
         }
 
@@ -1370,7 +1423,7 @@
                 <a href="#gallery" class="nav-link">Gallery</a>
                 <a href="#about" class="nav-link">About</a>
                 <a href="#faq" class="nav-link">FAQ</a>
-                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#contact" class="nav-btn">Reserve your spot</a>
             </nav>
             <div class="menu-toggle" id="menuToggle">
                 <span></span>
@@ -1395,7 +1448,7 @@
             <a href="#gallery" class="mobile-menu-link">Gallery</a>
             <a href="#about" class="mobile-menu-link">About</a>
             <a href="#faq" class="mobile-menu-link">FAQ</a>
-            <a href="#contact" class="mobile-menu-link">Contact</a>
+            <a href="#contact" class="mobile-menu-btn">Reserve your spot</a>
         </nav>
     </div>
 
