@@ -1408,8 +1408,8 @@
 
         // ===== LOAD EVENTS FROM EVENTBRITE (via Cloudflare Worker) =====
         (function() {
-            // ⚠️ IMPORTANTE: Reemplazar con la URL de tu Worker después del deploy
-            const WORKER_URL = 'https://lovebite-events.YOUR_SUBDOMAIN.workers.dev'
+            // URL del Worker en Cloudflare
+            const WORKER_URL = 'https://api.lovebite.club/events'
             
             const eventsGrid = document.getElementById('events-grid')
             
