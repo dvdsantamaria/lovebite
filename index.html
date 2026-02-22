@@ -629,6 +629,185 @@
             color: var(--charcoal);
         }
 
+        /* ===== GALLERY SECTION (CAROUSEL) ===== */
+        .gallery {
+            padding: 120px 40px;
+            background: var(--cream-dark);
+        }
+
+        .gallery-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .gallery-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .gallery-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .gallery-carousel {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            padding: 0 60px;
+            overflow: hidden;
+        }
+
+        .gallery-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            flex: 0 0 calc(25% - 15px);
+            position: relative;
+            aspect-ratio: 9/16;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--charcoal-light);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item video {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .gallery-video-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .gallery-video-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--white);
+        }
+
+        .gallery-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .gallery-btn:hover {
+            background: var(--gold);
+            color: var(--white);
+            border-color: var(--gold);
+        }
+
+        .gallery-prev {
+            left: 0;
+        }
+
+        .gallery-next {
+            right: 0;
+        }
+
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .gallery-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .gallery-dot.active {
+            background: var(--gold);
+            transform: scale(1.2);
+        }
+
+        .gallery-dot:hover {
+            background: var(--gold-light);
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-item {
+                flex: 0 0 calc(33.333% - 14px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-carousel {
+                padding: 0 50px;
+            }
+            
+            .gallery-item {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-item {
+                flex: 0 0 calc(50% - 10px);
+            }
+            
+            .gallery-btn {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
         /* ===== FAQ SECTION ===== */
         .faq {
             padding: 120px 40px;
@@ -993,6 +1172,7 @@
             </a>
             <nav class="nav-menu">
                 <a href="#events" class="nav-link">Events</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
                 <a href="#about" class="nav-link">About</a>
                 <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#contact" class="nav-link">Contact</a>
@@ -1112,6 +1292,139 @@
             <div class="events-loading">
                 <p>Loading events...</p>
             </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="gallery-header">
+            <h2 class="animate-on-scroll">Moments</h2>
+            <h3 class="animate-on-scroll delay-1">Real connections, real stories</h3>
+        </div>
+        <div class="gallery-carousel">
+            <div class="gallery-track">
+                <!-- Mezcla alternada: imagen, video, imagen, video... -->
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_0593.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_6063.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_6063.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_1330.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_6282.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_6282.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_5179.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_7074.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_7074.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_6606.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_7476.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_7476.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_6607.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_8110.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_8110.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_8106.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_8530.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_8530.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_8718.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <video poster="media/optimized/IMG_9108.webp" preload="none" loop muted playsinline>
+                        <source src="media/optimized/IMG_9108.mp4" type="video/mp4">
+                    </video>
+                    <div class="gallery-video-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_8720.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_8725.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9106.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9260.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9263.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9264.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9519.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9520.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9776.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9778.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9779.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="media/optimized/IMG_9780.webp" alt="Love Bite Event" loading="lazy">
+                </div>
+            </div>
+            <button class="gallery-btn gallery-prev" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button class="gallery-btn gallery-next" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <div class="gallery-dots"></div>
         </div>
     </section>
 
@@ -1386,6 +1699,146 @@
             carousel.addEventListener('mouseenter', () => clearInterval(autoPlay));
             carousel.addEventListener('mouseleave', () => {
                 autoPlay = setInterval(nextSlide, 6000);
+            });
+            
+            // Touch/swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            carousel.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                }
+            }, { passive: true });
+        })();
+
+        // ===== GALLERY CAROUSEL =====
+        (function() {
+            const track = document.querySelector('.gallery-track');
+            const items = document.querySelectorAll('.gallery-item');
+            const prevBtn = document.querySelector('.gallery-prev');
+            const nextBtn = document.querySelector('.gallery-next');
+            const dotsContainer = document.querySelector('.gallery-dots');
+            
+            if (!track || items.length === 0) return;
+            
+            let currentIndex = 0;
+            const totalItems = items.length;
+            
+            function getItemsPerView() {
+                const width = window.innerWidth;
+                if (width <= 480) return 2;
+                if (width <= 768) return 2;
+                if (width <= 1024) return 3;
+                return 4;
+            }
+            
+            function getMaxIndex() {
+                const itemsPerView = getItemsPerView();
+                return Math.max(0, totalItems - itemsPerView);
+            }
+            
+            // Setup video hover autoplay
+            items.forEach(item => {
+                const video = item.querySelector('video');
+                if (video) {
+                    // Play on mouse enter
+                    item.addEventListener('mouseenter', () => {
+                        video.play().catch(() => {
+                            // Auto-play was prevented, user interaction needed
+                        });
+                    });
+                    
+                    // Pause on mouse leave
+                    item.addEventListener('mouseleave', () => {
+                        video.pause();
+                        video.currentTime = 0;
+                    });
+                }
+            });
+            
+            // Create dots
+            function createDots() {
+                dotsContainer.innerHTML = '';
+                const maxIndex = getMaxIndex();
+                const totalDots = maxIndex + 1;
+                
+                for (let i = 0; i < totalDots; i++) {
+                    const dot = document.createElement('button');
+                    dot.classList.add('gallery-dot');
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateCarousel();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+            
+            createDots();
+            
+            function updateCarousel() {
+                const itemWidth = items[0].offsetWidth + 20; // item width + gap
+                track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+                
+                // Update dots
+                const dots = document.querySelectorAll('.gallery-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+                
+                // Pause all videos when sliding
+                items.forEach(item => {
+                    const video = item.querySelector('video');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                });
+            }
+            
+            function nextSlide() {
+                const maxIndex = getMaxIndex();
+                currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+                updateCarousel();
+            }
+            
+            function prevSlide() {
+                const maxIndex = getMaxIndex();
+                currentIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
+                updateCarousel();
+            }
+            
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    createDots();
+                    currentIndex = Math.min(currentIndex, getMaxIndex());
+                    updateCarousel();
+                }, 250);
+            });
+            
+            // Auto-advance every 4 seconds (faster for gallery)
+            let autoPlay = setInterval(nextSlide, 4000);
+            
+            // Pause on hover
+            const carousel = document.querySelector('.gallery-carousel');
+            carousel.addEventListener('mouseenter', () => clearInterval(autoPlay));
+            carousel.addEventListener('mouseleave', () => {
+                autoPlay = setInterval(nextSlide, 4000);
             });
             
             // Touch/swipe support
