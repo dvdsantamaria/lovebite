@@ -1,0 +1,19 @@
+{
+    "name": "Love Bite Club",
+    "short_name": "Love Bite",
+    "icons": [
+        {
+            "src": "favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#f5f0e8",
+    "background_color": "#f5f0e8",
+    "display": "standalone"
+}
