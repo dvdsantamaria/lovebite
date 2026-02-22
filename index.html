@@ -415,12 +415,14 @@
             margin: 0 auto;
             position: relative;
             padding: 0 60px;
+            overflow: hidden;
         }
 
         .testimonial-track {
             display: flex;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             gap: 40px;
+            overflow: visible;
         }
 
         .testimonial-card {
@@ -1090,7 +1092,8 @@
             }
 
             .testimonial-carousel {
-                padding: 0 50px;
+                padding: 0 40px;
+                overflow: hidden;
             }
 
             .testimonial-card {
@@ -1130,14 +1133,18 @@
                 grid-template-columns: 1fr;
             }
 
+            .testimonial-track {
+                gap: 15px;
+            }
+
             .testimonial-card {
                 flex: 0 0 100%;
                 padding: 30px 25px;
             }
 
             .carousel-btn {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
 
             .carousel-prev {
@@ -1169,6 +1176,60 @@
 
             .faq-answer p {
                 padding: 0 24px 20px;
+            }
+
+            /* Gallery mobile - 1 item bigger */
+            .gallery-carousel {
+                padding: 0 20px;
+            }
+
+            .gallery-track {
+                gap: 15px;
+            }
+
+            .gallery-item {
+                flex: 0 0 85%;
+                max-height: 65vh;
+            }
+
+            .gallery-item img,
+            .gallery-item video {
+                max-height: 65vh;
+            }
+
+            .gallery-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .gallery-prev {
+                left: -5px;
+            }
+
+            .gallery-next {
+                right: -5px;
+            }
+
+            .gallery-video-icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .gallery-video-icon svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-item {
+                flex: 0 0 90%;
+                max-height: 60vh;
+            }
+
+            .gallery-item img,
+            .gallery-item video {
+                max-height: 60vh;
             }
         }
     </style>
@@ -1741,11 +1802,12 @@
             
             let currentIndex = 0;
             const totalItems = items.length;
+            const isMobile = window.innerWidth <= 768;
             
             function getItemsPerView() {
                 const width = window.innerWidth;
-                if (width <= 480) return 2;
-                if (width <= 768) return 2;
+                if (width <= 480) return 1;
+                if (width <= 768) return 1;
                 if (width <= 1024) return 3;
                 return 4;
             }
@@ -1755,24 +1817,39 @@
                 return Math.max(0, totalItems - itemsPerView);
             }
             
-            // Setup video hover autoplay
-            items.forEach(item => {
-                const video = item.querySelector('video');
-                if (video) {
-                    // Play on mouse enter
-                    item.addEventListener('mouseenter', () => {
-                        video.play().catch(() => {
-                            // Auto-play was prevented, user interaction needed
+            // Setup video autoplay based on device
+            if (isMobile) {
+                // Mobile: autoplay videos when visible
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = entry.target.querySelector('video');
+                        if (video) {
+                            if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+                                video.play().catch(() => {});
+                            } else {
+                                video.pause();
+                                video.currentTime = 0;
+                            }
+                        }
+                    });
+                }, { threshold: [0.7] });
+                
+                items.forEach(item => videoObserver.observe(item));
+            } else {
+                // Desktop: hover to play
+                items.forEach(item => {
+                    const video = item.querySelector('video');
+                    if (video) {
+                        item.addEventListener('mouseenter', () => {
+                            video.play().catch(() => {});
                         });
-                    });
-                    
-                    // Pause on mouse leave
-                    item.addEventListener('mouseleave', () => {
-                        video.pause();
-                        video.currentTime = 0;
-                    });
-                }
-            });
+                        item.addEventListener('mouseleave', () => {
+                            video.pause();
+                            video.currentTime = 0;
+                        });
+                    }
+                });
+            }
             
             // Create dots
             function createDots() {
@@ -1796,23 +1873,24 @@
             createDots();
             
             function updateCarousel() {
-                const itemWidth = items[0].offsetWidth + 20; // item width + gap
+                const itemWidth = items[0].offsetWidth + 20;
                 track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
                 
-                // Update dots
                 const dots = document.querySelectorAll('.gallery-dot');
                 dots.forEach((dot, index) => {
                     dot.classList.toggle('active', index === currentIndex);
                 });
                 
-                // Pause all videos when sliding
-                items.forEach(item => {
-                    const video = item.querySelector('video');
-                    if (video) {
-                        video.pause();
-                        video.currentTime = 0;
-                    }
-                });
+                // Pause all videos when sliding (non-mobile)
+                if (!isMobile) {
+                    items.forEach(item => {
+                        const video = item.querySelector('video');
+                        if (video) {
+                            video.pause();
+                            video.currentTime = 0;
+                        }
+                    });
+                }
             }
             
             function nextSlide() {
@@ -1841,7 +1919,7 @@
                 }, 250);
             });
             
-            // Auto-advance every 4 seconds (faster for gallery)
+            // Auto-advance every 4 seconds
             let autoPlay = setInterval(nextSlide, 4000);
             
             // Pause on hover
