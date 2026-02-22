@@ -769,8 +769,11 @@
         .gallery-dots {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 10px;
             margin-top: 30px;
+            padding: 5px;
+            overflow: visible;
         }
 
         .gallery-dot {
@@ -782,11 +785,12 @@
             transition: all 0.3s ease;
             border: none;
             padding: 0;
+            flex-shrink: 0;
         }
 
         .gallery-dot.active {
             background: var(--gold);
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
         .gallery-dot:hover {
@@ -1071,6 +1075,126 @@
             background: var(--charcoal);
         }
 
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--cream);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .mobile-menu-header .logo img {
+            height: 40px;
+            filter: brightness(0) invert(0);
+        }
+
+        .mobile-menu-close {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--charcoal);
+            background: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-close:hover {
+            background: var(--charcoal);
+            color: var(--white);
+        }
+
+        .mobile-menu-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .mobile-menu-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-menu-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--gold);
+        }
+
+        .mobile-menu-link:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-header {
+                padding: 15px 20px;
+            }
+
+            .mobile-menu-header .logo img {
+                height: 36px;
+            }
+
+            .mobile-menu-close {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-menu-nav {
+                gap: 25px;
+                padding: 30px 20px;
+            }
+
+            .mobile-menu-link {
+                font-size: 24px;
+                letter-spacing: 6px;
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .nav-menu {
@@ -1248,13 +1372,32 @@
                 <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
-            <div class="menu-toggle">
+            <div class="menu-toggle" id="menuToggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="/" class="logo">
+                <img src="logo.png" alt="lovebite.club">
+            </a>
+            <button class="mobile-menu-close" id="menuClose" aria-label="Close menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <nav class="mobile-menu-nav">
+            <a href="#events" class="mobile-menu-link">Events</a>
+            <a href="#gallery" class="mobile-menu-link">Gallery</a>
+            <a href="#about" class="mobile-menu-link">About</a>
+            <a href="#faq" class="mobile-menu-link">FAQ</a>
+            <a href="#contact" class="mobile-menu-link">Contact</a>
+        </nav>
+    </div>
 
     <!-- Hero -->
     <section class="hero">
@@ -1590,6 +1733,44 @@
 
     <!-- JavaScript -->
     <script>
+        // ===== MOBILE MENU =====
+        (function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuClose = document.getElementById('menuClose');
+            const mobileLinks = document.querySelectorAll('.mobile-menu-link');
+            
+            if (!menuToggle || !mobileMenu) return;
+            
+            // Open menu
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Close menu
+            menuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('is-open');
+                document.body.style.overflow = '';
+            });
+            
+            // Close on link click
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
+                    mobileMenu.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                }
+            });
+        })();
+
         // ===== HEADER SCROLL EFFECT =====
         (function() {
             const header = document.getElementById('header');
