@@ -2,8 +2,11 @@ name = "lovebite-events"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
+account_id = "ea2623e9cbd5d776f9708f026503d7e3"
+
 [vars]
 EVENTBRITE_ORG_ID = "2407246841743"
 
-# Secrets (set these with wrangler secret put):
-# EVENTBRITE_PRIVATE_TOKEN = "OJW54ORKFZRTJCKZNV42"
+[[routes]]
+pattern = "api.lovebite.club/events"
+zone_id = "72f58ab3ffb0417a67340be2f26c5d2f"
