@@ -2273,7 +2273,7 @@
                 
                 return `
                     <div class="events-toggle-wrapper" style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
-                        <button id="toggle-past-events" class="btn btn-outline" style="cursor: pointer;">
+                        <button id="toggle-past-events" class="btn" style="cursor: pointer; background: var(--charcoal); color: var(--white); border: none; padding: 15px 40px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">
                             See Past Events
                         </button>
                     </div>
@@ -2360,8 +2360,22 @@
                 const toggleWrapper = document.querySelector('.events-toggle-wrapper')
                 
                 if (showingPast) {
-                    // Hide past events - reload to show only upcoming
-                    loadEvents()
+                    // Hide past events - remove divider and past event cards
+                    const divider = document.getElementById('past-events-divider')
+                    if (divider) divider.remove()
+                    
+                    // Remove all past event cards (they have URLs containing tickets-)
+                    const allEventCards = eventsGrid.querySelectorAll('.event-card')
+                    allEventCards.forEach(card => {
+                        const link = card.getAttribute('href')
+                        if (link && pastEvents.some(e => e.url === link)) {
+                            card.remove()
+                        }
+                    })
+                    
+                    if (toggleBtn) {
+                        toggleBtn.textContent = 'See Past Events'
+                    }
                     showingPast = false
                 } else {
                     // Show past events
@@ -2379,26 +2393,32 @@
                 
                 const toggleWrapper = document.querySelector('.events-toggle-wrapper')
                 
-                // Create past events section
-                const pastSection = document.createElement('div')
-                pastSection.id = 'past-events-section'
-                pastSection.style.cssText = 'grid-column: 1 / -1; margin-top: 40px;'
-                pastSection.innerHTML = `
-                    <h4 style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 30px; color: var(--charcoal-light);">Past Events</h4>
-                    <div class="past-events-grid" style="display: contents;">
-                        ${pastEvents.map((event, index) => renderEvent(event, index)).join('')}
-                    </div>
+                // Create past events divider
+                const divider = document.createElement('div')
+                divider.id = 'past-events-divider'
+                divider.style.cssText = 'grid-column: 1 / -1; text-align: center; margin: 40px 0 20px 0;'
+                divider.innerHTML = `
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--charcoal-light);">Past Events</h4>
                 `
                 
-                // Insert after toggle button
+                // Insert divider before toggle button
                 if (toggleWrapper) {
-                    toggleWrapper.after(pastSection)
-                } else {
-                    eventsGrid.appendChild(pastSection)
+                    toggleWrapper.before(divider)
                 }
                 
-                // Re-trigger animations
-                const newElements = pastSection.querySelectorAll('.animate-on-scroll')
+                // Insert past events into the same grid, before the toggle button
+                pastEvents.forEach((event, index) => {
+                    const eventCard = document.createElement('div')
+                    eventCard.innerHTML = renderEvent(event, index)
+                    if (toggleWrapper) {
+                        toggleWrapper.before(eventCard.firstElementChild)
+                    } else {
+                        eventsGrid.appendChild(eventCard.firstElementChild)
+                    }
+                })
+                
+                // Re-trigger animations for new elements
+                const newElements = eventsGrid.querySelectorAll('.animate-on-scroll:not(.is-visible)')
                 newElements.forEach(el => {
                     el.classList.remove('is-visible')
                     setTimeout(() => window.scrollObserver && window.scrollObserver.observe(el), 100)
