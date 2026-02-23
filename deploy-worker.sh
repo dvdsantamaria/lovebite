@@ -20,10 +20,6 @@ fi
 # Navigate to worker directory
 cd "$(dirname "$0")/cloudflare-worker"
 
-# Set secrets
-echo "🔐 Setting up secrets..."
-echo "OJW54ORKFZRTJCKZNV42" | wrangler secret put EVENTBRITE_PRIVATE_TOKEN
-
 # Deploy
 echo "🚀 Deploying Worker..."
 wrangler deploy

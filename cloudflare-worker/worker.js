@@ -14,39 +14,27 @@ export default {
     }
 
     try {
-      // Fetch events from Eventbrite API
+      // Fetch events from Eventbrite public page (web scraping)
       const response = await fetch(
-        `https://www.eventbriteapi.com/v3/organizations/${env.EVENTBRITE_ORG_ID}/events/?status=live&expand=venue&order_by=start_asc`,
+        'https://www.eventbrite.com.au/o/96768399103',
         {
           headers: {
-            'Authorization': `Bearer ${env.EVENTBRITE_PRIVATE_TOKEN}`
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
           }
         }
       )
 
       if (!response.ok) {
-        throw new Error(`Eventbrite API error: ${response.status}`)
+        throw new Error(`Eventbrite page error: ${response.status}`)
       }
 
-      const data = await response.json()
+      const html = await response.text()
       
-      // Transform and filter the data
-      const events = data.events.map(event => ({
-        id: event.id,
-        name: event.name.text,
-        description: event.description?.text || '',
-        url: event.url,
-        start: event.start.local,
-        end: event.end.local,
-        image: event.logo?.url || null,
-        venue: event.venue ? {
-          name: event.venue.name,
-          address: event.venue.address?.localized_address_display || ''
-        } : null,
-        is_free: event.is_free,
-        ticket_availability: event.ticket_availability
-      }))
-
+      // Extract events from JSON-LD structured data
+      const events = extractEventsFromHtml(html)
+      
       return new Response(JSON.stringify({ events }), { headers })
     } catch (error) {
       return new Response(
@@ -55,4 +43,116 @@ export default {
       )
     }
   }
+}
+
+function extractEventsFromHtml(html) {
+  const events = []
+  
+  // Find all JSON-LD script tags
+  const startMarker = '<script type="application/ld+json">'
+  const endMarker = '</script>'
+  
+  let idx = 0
+  while (true) {
+    const start = html.indexOf(startMarker, idx)
+    if (start === -1) break
+    
+    const scriptStart = start + startMarker.length
+    const end = html.indexOf(endMarker, scriptStart)
+    if (end === -1) break
+    
+    const jsonStr = html.substring(scriptStart, end).trim()
+    idx = end + endMarker.length
+    
+    try {
+      const data = JSON.parse(jsonStr)
+      
+      // Look for itemListElement which contains events list
+      if (data && data.itemListElement && Array.isArray(data.itemListElement)) {
+        for (const listItem of data.itemListElement) {
+          const item = listItem.item
+          if (item && item['@type'] === 'Event') {
+            events.push(transformEvent(item))
+          }
+        }
+      }
+    } catch (e) {
+      // Skip invalid JSON
+      continue
+    }
+  }
+  
+  // Filter to only future events and sort by date
+  const now = new Date()
+  const futureEvents = events.filter(e => new Date(e.start) > now)
+  
+  // Sort by start date (ascending)
+  futureEvents.sort((a, b) => new Date(a.start) - new Date(b.start))
+  
+  return futureEvents
+}
+
+function transformEvent(item) {
+  // Parse location
+  const location = item.location || {}
+  const venueName = location.name || 'Sydney Venue'
+  const address = location.address || {}
+  const addressDisplay = address.streetAddress 
+    ? `${address.streetAddress}, ${address.addressLocality}`
+    : venueName
+  
+  // Parse dates - Eventbrite format: 2026-02-27T18:30:00+1100
+  const startDate = item.startDate || ''
+  const endDate = item.endDate || ''
+  
+  // Convert to format expected by frontend (ISO format)
+  const start = startDate ? convertToIsoFormat(startDate) : ''
+  const end = endDate ? convertToIsoFormat(endDate) : ''
+  
+  return {
+    id: extractEventId(item.url),
+    name: item.name || 'Untitled Event',
+    description: item.description || '',
+    url: item.url || '',
+    start: start,
+    end: end,
+    image: item.image || null,
+    venue: {
+      name: venueName,
+      address: addressDisplay
+    },
+    is_free: isFreeEvent(item),
+    ticket_availability: null
+  }
+}
+
+function convertToIsoFormat(dateStr) {
+  // Eventbrite format: 2026-02-27T18:30:00+1100
+  // Need to convert to: 2026-02-27T18:30:00+11:00 (add colon in timezone)
+  if (!dateStr) return ''
+  
+  // Match pattern like +1100 or -0500 at the end and add colon
+  const match = dateStr.match(/^(.+)([+-])(\d{2})(\d{2})$/)
+  if (match) {
+    return `${match[1]}${match[2]}${match[3]}:${match[4]}`
+  }
+  
+  return dateStr
+}
+
+function extractEventId(url) {
+  if (!url) return ''
+  const match = url.match(/tickets-(\d+)$/)
+  return match ? match[1] : url
+}
+
+function isFreeEvent(item) {
+  const offers = item.offers || {}
+  if (offers.price === '0' || offers.price === 0) {
+    return true
+  }
+  if (offers.priceCurrency && !offers.price) {
+    return true
+  }
+  return false
 }
