@@ -2320,8 +2320,8 @@
                         return
                     }
                     
-                    // Render upcoming events (already sorted by worker)
-                    let html = upcomingEvents.slice(0, 8).map((event, index) => 
+                    // Render ALL upcoming events (already sorted by worker)
+                    let html = upcomingEvents.map((event, index) => 
                         renderEvent(event, index)
                     ).join('')
                     
@@ -2386,7 +2386,7 @@
                 pastSection.innerHTML = `
                     <h4 style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 30px; color: var(--charcoal-light);">Past Events</h4>
                     <div class="past-events-grid" style="display: contents;">
-                        ${pastEvents.slice(0, 12).map((event, index) => renderEvent(event, index)).join('')}
+                        ${pastEvents.map((event, index) => renderEvent(event, index)).join('')}
                     </div>
                 `
                 
