@@ -171,7 +171,7 @@ Your comfort is our priority. Event hosts will be available throughout the eveni
 **Our standard policy:**
 - Tickets are generally **non-refundable** to secure your place and maintain balanced ratios
 - This policy helps us ensure committed attendees and fair gender balance
-- For specific circumstances, please contact us at hello@lovebite.club
+- For specific circumstances, please contact us at lovebitesydney@outlook.com
 
 We recommend checking your schedule before booking as spaces are limited and in high demand.
 
@@ -213,7 +213,7 @@ All our events are booked through Eventbrite:
 
 ### What if I have more questions?
 
-We're here to help! Contact us at **hello@lovebite.club** and we'll get back to you as soon as possible.
+We're here to help! Contact us at **lovebitesydney@outlook.com** and we'll get back to you as soon as possible.
 
 ---
 
