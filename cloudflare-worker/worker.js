@@ -15,6 +15,7 @@ export default {
 
     try {
       // Fetch events from Eventbrite public page (web scraping)
+      // Using organization ID which doesn't change when business name changes
       const response = await fetch(
         'https://www.eventbrite.com.au/o/96768399103',
         {
@@ -33,9 +34,23 @@ export default {
       const html = await response.text()
       
       // Extract events from JSON-LD structured data
-      const events = extractEventsFromHtml(html)
+      const allEvents = extractEventsFromHtml(html)
       
-      return new Response(JSON.stringify({ events }), { headers })
+      // Split into upcoming and past events
+      const now = new Date()
+      const upcoming = allEvents.filter(e => new Date(e.start) > now)
+      const past = allEvents.filter(e => new Date(e.start) <= now)
+      
+      // Sort both lists
+      upcoming.sort((a, b) => new Date(a.start) - new Date(b.start))
+      past.sort((a, b) => new Date(b.start) - new Date(a.start)) // Past events: newest first
+      
+      return new Response(JSON.stringify({ 
+        events: upcoming,
+        past_events: past,
+        total_upcoming: upcoming.length,
+        total_past: past.length
+      }), { headers })
     } catch (error) {
       return new Response(
         JSON.stringify({ error: error.message }), 
@@ -82,14 +97,7 @@ function extractEventsFromHtml(html) {
     }
   }
   
-  // Filter to only future events and sort by date
-  const now = new Date()
-  const futureEvents = events.filter(e => new Date(e.start) > now)
-  
-  // Sort by start date (ascending)
-  futureEvents.sort((a, b) => new Date(a.start) - new Date(b.start))
-  
-  return futureEvents
+  return events
 }
 
 function transformEvent(item) {

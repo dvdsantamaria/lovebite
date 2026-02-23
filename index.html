@@ -2190,6 +2190,10 @@
             
             if (!eventsGrid) return
             
+            // Store past events for toggle
+            let pastEvents = []
+            let showingPast = false
+            
             // Generate fallback description based on event name
             function getEventDescription(event) {
                 const name = event.name.toLowerCase()
@@ -2242,6 +2246,8 @@
                 const date = formatDate(event.start)
                 const time = formatTime(event.start)
                 const delayClass = index < 3 ? `delay-${index}` : ''
+                const isPast = new Date(event.start) < new Date()
+                const ctaText = isPast ? 'View Event →' : 'Reserve Your Spot →'
                 
                 return `
                     <a href="${event.url}" target="_blank" class="event-card animate-on-scroll ${delayClass}" style="text-decoration: none; color: inherit;">
@@ -2255,9 +2261,22 @@
                                 <span>📅 ${date} at ${time}</span>
                                 <span>📍 ${venueName}</span>
                             </div>
-                            <span class="event-link">Reserve Your Spot →</span>
+                            <span class="event-link">${ctaText}</span>
                         </div>
                     </a>
+                `
+            }
+            
+            // Render toggle button for past events
+            function renderToggleButton(hasPastEvents) {
+                if (!hasPastEvents) return ''
+                
+                return `
+                    <div class="events-toggle-wrapper" style="grid-column: 1 / -1; text-align: center; margin-top: 20px;">
+                        <button id="toggle-past-events" class="btn btn-outline" style="cursor: pointer;">
+                            See Past Events
+                        </button>
+                    </div>
                 `
             }
             
@@ -2272,39 +2291,50 @@
                     
                     const data = await response.json()
                     
-                    if (!data.events || data.events.length === 0) {
+                    // Store past events
+                    pastEvents = data.past_events || []
+                    
+                    const upcomingEvents = data.events || []
+                    
+                    if (upcomingEvents.length === 0 && pastEvents.length === 0) {
                         eventsGrid.innerHTML = `
                             <div class="events-error">
-                                <p>No upcoming events at the moment.</p>
+                                <p>No events at the moment.</p>
                                 <p>Check back soon or follow us on social media!</p>
                             </div>
                         `
                         return
                     }
                     
-                    // Sort events by date (closest first)
-                    const sortedEvents = data.events.sort((a, b) => 
-                        new Date(a.start) - new Date(b.start)
-                    )
-                    
-                    // Take only future events (up to 8)
-                    const now = new Date()
-                    const futureEvents = sortedEvents.filter(e => new Date(e.start) > now).slice(0, 8)
-                    
-                    if (futureEvents.length === 0) {
+                    if (upcomingEvents.length === 0) {
                         eventsGrid.innerHTML = `
                             <div class="events-error">
                                 <p>No upcoming events at the moment.</p>
-                                <p>Check back soon or follow us on social media!</p>
+                                <p>Check out our past events below!</p>
                             </div>
                         `
+                        // Show past events automatically if no upcoming
+                        if (pastEvents.length > 0) {
+                            renderPastEvents()
+                        }
                         return
                     }
                     
-                    // Render events
-                    eventsGrid.innerHTML = futureEvents.map((event, index) => 
+                    // Render upcoming events (already sorted by worker)
+                    let html = upcomingEvents.slice(0, 8).map((event, index) => 
                         renderEvent(event, index)
                     ).join('')
+                    
+                    // Add toggle button if there are past events
+                    html += renderToggleButton(pastEvents.length > 0)
+                    
+                    eventsGrid.innerHTML = html
+                    
+                    // Setup toggle button listener
+                    const toggleBtn = document.getElementById('toggle-past-events')
+                    if (toggleBtn) {
+                        toggleBtn.addEventListener('click', togglePastEvents)
+                    }
                     
                     // Re-trigger animations for new elements
                     const newElements = eventsGrid.querySelectorAll('.animate-on-scroll')
@@ -2318,10 +2348,61 @@
                     eventsGrid.innerHTML = `
                         <div class="events-error">
                             <p>Unable to load events at the moment.</p>
-                            <p><a href="https://www.eventbrite.com.au/o/the-social-table-meet-connect-sydney-2407246841743" target="_blank">View events on Eventbrite →</a></p>
+                            <p><a href="https://www.eventbrite.com.au/o/96768399103" target="_blank">View events on Eventbrite →</a></p>
                         </div>
                     `
                 }
+            }
+            
+            // Toggle past events visibility
+            function togglePastEvents() {
+                const toggleBtn = document.getElementById('toggle-past-events')
+                const toggleWrapper = document.querySelector('.events-toggle-wrapper')
+                
+                if (showingPast) {
+                    // Hide past events - reload to show only upcoming
+                    loadEvents()
+                    showingPast = false
+                } else {
+                    // Show past events
+                    renderPastEvents()
+                    if (toggleBtn) {
+                        toggleBtn.textContent = 'Hide Past Events'
+                    }
+                    showingPast = true
+                }
+            }
+            
+            // Render past events
+            function renderPastEvents() {
+                if (pastEvents.length === 0) return
+                
+                const toggleWrapper = document.querySelector('.events-toggle-wrapper')
+                
+                // Create past events section
+                const pastSection = document.createElement('div')
+                pastSection.id = 'past-events-section'
+                pastSection.style.cssText = 'grid-column: 1 / -1; margin-top: 40px;'
+                pastSection.innerHTML = `
+                    <h4 style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 30px; color: var(--charcoal-light);">Past Events</h4>
+                    <div class="past-events-grid" style="display: contents;">
+                        ${pastEvents.slice(0, 12).map((event, index) => renderEvent(event, index)).join('')}
+                    </div>
+                `
+                
+                // Insert after toggle button
+                if (toggleWrapper) {
+                    toggleWrapper.after(pastSection)
+                } else {
+                    eventsGrid.appendChild(pastSection)
+                }
+                
+                // Re-trigger animations
+                const newElements = pastSection.querySelectorAll('.animate-on-scroll')
+                newElements.forEach(el => {
+                    el.classList.remove('is-visible')
+                    setTimeout(() => window.scrollObserver && window.scrollObserver.observe(el), 100)
+                })
             }
             
             // Load events on page load
