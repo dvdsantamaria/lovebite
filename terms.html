@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | LoveBite.club</title>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="theme-color" content="#f5f0e8">
+    <meta name="msapplication-TileColor" content="#f5f0e8">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #F5F0E8;
+            --cream-dark: #E8E0D4;
+            --charcoal: #1A1A1A;
+            --charcoal-light: #2D2D2D;
+            --gold: #C9A962;
+            --gold-light: #D4BC7E;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--charcoal);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            transition: filter 0.4s ease;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            background: var(--cream);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: var(--gold) !important;
+            color: var(--white) !important;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--cream);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .mobile-menu-header .logo img {
+            filter: brightness(0) invert(0);
+        }
+
+        .menu-close {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--charcoal);
+        }
+
+        .mobile-menu-links {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .mobile-menu-link {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            color: var(--charcoal);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--gold);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .page-content {
+            padding: 140px 40px 80px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .page-intro {
+            font-size: 16px;
+            color: rgba(26, 26, 26, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .terms-section {
+            margin-bottom: 50px;
+        }
+
+        .terms-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--charcoal);
+        }
+
+        .terms-section p {
+            font-size: 15px;
+            color: rgba(26, 26, 26, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .terms-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 15px;
+        }
+
+        .terms-section ul li {
+            font-size: 15px;
+            color: rgba(26, 26, 26, 0.8);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .terms-section ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        .terms-section a {
+            color: var(--charcoal);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color 0.3s ease;
+        }
+
+        .terms-section a:hover {
+            color: var(--gold);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 60px 40px;
+            background: var(--charcoal);
+            color: var(--white);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo img {
+            height: 42px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--gold);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page-content {
+                padding: 120px 20px 60px;
+            }
+
+            .footer {
+                padding: 40px 20px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="logo.png" alt="lovebite.club">
+            </a>
+            <nav class="nav-menu">
+                <a href="/#events" class="nav-link">Events</a>
+                <a href="/#gallery" class="nav-link">Gallery</a>
+                <a href="/#about" class="nav-link">About</a>
+                <a href="/#faq" class="nav-link">FAQ</a>
+                <a href="/#contact" class="nav-btn">Reserve your spot</a>
+            </nav>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="/" class="logo">
+                <img src="logo.png" alt="lovebite.club">
+            </a>
+            <div class="menu-close" id="menuClose">&times;</div>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="/#events" class="mobile-menu-link">Events</a>
+            <a href="/#gallery" class="mobile-menu-link">Gallery</a>
+            <a href="/#about" class="mobile-menu-link">About</a>
+            <a href="/#faq" class="mobile-menu-link">FAQ</a>
+            <a href="/#contact" class="mobile-menu-link">Contact</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <div class="page-header">
+            <h1 class="page-title">Terms & Conditions</h1>
+            <p class="page-intro">By purchasing a ticket or attending a Lovebite event, you agree to the following:</p>
+        </div>
+
+        <section class="terms-section">
+            <h2>18+ Only</h2>
+            <p>All attendees must be 18 years or older. Valid government-issued ID may be required for entry.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Tickets & Refunds</h2>
+            <p>All ticket sales are final and non-refundable, except where required under Australian Consumer Law.</p>
+            <p>If Lovebite cancels an event, you will be offered either:</p>
+            <ul>
+                <li>A full refund, or</li>
+                <li>A credit toward a future event.</li>
+            </ul>
+            <p>Tickets may not be resold without written approval.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Event Changes</h2>
+            <p>We reserve the right to change event dates, venues, formats, or hosts if necessary. If significant changes occur, ticket holders will be notified via email.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Code of Conduct</h2>
+            <p>Lovebite is committed to providing a safe and inclusive environment. Harassment, discrimination, aggressive behaviour, or failure to follow staff instructions may result in refusal of entry or removal without refund.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Assumption of Risk & Liability</h2>
+            <p>You acknowledge that Lovebite events are social experiences involving interaction with other attendees.</p>
+            <p>To the maximum extent permitted by law:</p>
+            <ul>
+                <li>You attend at your own risk.</li>
+                <li>Lovebite is not liable for personal injury, loss, damage, theft, emotional distress, or dissatisfaction arising from attendance.</li>
+                <li>We do not guarantee romantic matches, compatibility, or specific outcomes.</li>
+                <li>We are not responsible for the conduct of other attendees.</li>
+            </ul>
+            <p>Nothing in these Terms excludes, restricts, or modifies any rights you may have under Australian Consumer Law.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Media Release</h2>
+            <p>By attending, you consent to photography and video recording for promotional and marketing purposes. If you do not wish to appear in content, you must notify us in writing before the event.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Privacy</h2>
+            <p>Personal information is handled in accordance with our Privacy Policy.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2>Contact</h2>
+            <p><a href="mailto:lovebitesydney@outlook.com">lovebitesydney@outlook.com</a></p>
+            <p><a href="https://lovebite.club">https://lovebite.club</a></p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <img src="logo.svg" alt="lovebite.club">
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="terms.html">Terms & Conditions</a>
+                <a href="mailto:lovebitesydney@outlook.com">lovebitesydney@outlook.com</a>
+            </div>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/lovebite_club_">Instagram</a>
+                <a href="#">TikTok</a>
+                <a href="#">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu
+        (function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuClose = document.getElementById('menuClose');
+            const mobileLinks = document.querySelectorAll('.mobile-menu-link');
+            
+            if (!menuToggle || !mobileMenu) return;
+            
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            menuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('is-open');
+                document.body.style.overflow = '';
+            });
+            
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
+                    mobileMenu.classList.remove('is-open');
+                    document.body.style.overflow = '';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
